@@ -15,77 +15,48 @@ import json
 import difflib
 
 
-def welcome_message():
+def translate():
     print("Hello and welcome to my dictionary !! \nWhat do want to know the meaning of ?")
-
-
-def load_data():
     data = json.load(open("data.json"))
-    return data
-
-
-def get_word():
-    user_input = input("Enter a word : ").lower()
-    return user_input
-
-
-def check_good_bad(data2, word1):
-    if word1 not in data2.keys():
-        return False
-    else:
-        return True
-
-
-def check_matches(data3, word2):
-    match = difflib.get_close_matches(word2, data3.keys(), n=1, cutoff=0.4) # returns only one match
-    if len(match) != 0:
-        return match
-    else:
-        return "none" # if no match was found with > 40 % similarity
-
-
-def get_meaning(data3, word_in):
-    return data3[word_in]
-
-
-def ask_user():
-    correct = False
-    while not correct:
-        yes_no = input("Do you want to search more ?? Press 'y' for yes and 'n' for no : ")
-        if yes_no.lower() in ("y", "yes"):
-            result = True
-            break
-        elif yes_no.lower() in ("n", "no"):
-            result = False
-            break
+    cont = True
+    while cont:
+        user_input = input("\n\nEnter a word : ").lower()
+        if user_input in data.keys():
+            output = data[user_input]
+            for item in output:
+                print(item)
+        elif user_input.capitalize() in data.keys():
+            output = data[user_input.capitalize()]
+            for item in output:
+                print(item)
+        elif user_input.upper() in data.keys():
+            output = data[user_input.upper()]
+            for item in output:
+                print(item)
         else:
-            print("Sorry, I don't follow !!")
-    return result
-
-
-user_continue = True
-welcome_message()
-
-while user_continue:
-    data1 = load_data()
-    word = get_word()
-    good_bad = check_good_bad(data1, word)
-    if good_bad:
-        print(get_meaning(data1, word))
-    else:
-        answer = check_matches(data1, word)
-        if answer == "none":
-            print("Oops !! Was there a typo ?")
-        else:
-            word = answer
-            print("Did you mean " + str(word) + " ? ")
-            check = input("Enter 'y' for yes and 'n' for no : ")
-            if check.lower() in ("yes","y"):
-                word = str(word[0])
-                print(word)
-                print(get_meaning(data1, word))
+            match = difflib.get_close_matches(user_input, data.keys(), n=1, cutoff=0.4)  # returns only one match
+            if isinstance(match, list):
+                user_input_yesno = input("Did you mean " + str(match) + " ? \nEnter 'y' for yes and 'n' for no : ")
+                if user_input_yesno.lower() in ('yes', 'y'):
+                    match = match[0]
+                    output = data[match]
+                    for item in output:
+                        print(item)
+                elif user_input_yesno.lower() in ('no', 'n'):
+                    print("\n********Please double check the word********")
             else:
-                print("Please double check the word !!")
-    user_continue = ask_user()
+                print("Oops !! Was there a typo ?")
+        end = False
+        while not end:
+            user_input_continue = input("\nDo you want to search more ?\nEnter 'y' for yes and 'n' for no : ")
+            if user_input_continue in ('y', 'yes'):
+                cont = True
+                break
+            elif user_input_continue in ('n', 'no'):
+                cont = False
+                break
+            else:
+                print("Sorry, I didn't get you !!")
 
-print("Ciao !!")
+
+translate()
