@@ -49,10 +49,10 @@ def translate():
         end = False
         while not end:
             user_input_continue = input("\nDo you want to search more ?\nEnter 'y' for yes and 'n' for no : ")
-            if user_input_continue in ('y', 'yes'):
+            if user_input_continue.lower() in ('y', 'yes'):
                 cont = True
                 break
-            elif user_input_continue in ('n', 'no'):
+            elif user_input_continue.lower() in ('n', 'no'):
                 cont = False
                 break
             else:
