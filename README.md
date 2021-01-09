@@ -1,5 +1,5 @@
 # Real_World_Applications
-This repository contains 10 real world applications using Python
+This repository contains real world applications using Python
            
 1 ) **Interactive_English_Dictionary**
   - A program that takes a single word as input from user and displays its meaning.
